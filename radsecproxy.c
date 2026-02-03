@@ -1797,8 +1797,8 @@ int replyh(struct server *server, uint8_t *buf, int len) {
         if (!RAND_bytes(newsalt, 2))
             goto errunlock;
         newsalt[0] |= 0x80;
-        if (!pwdrecrypt(attr->v + 3, attr->l - 3, server->conf->secret, server->conf->secret_len, from->conf->secret, from->conf->secret_len,
-                        rqout->rq->msg->auth, rqout->rq->rqauth, attr->v + 1, 2, newsalt, 2))
+        if (!pwdcrypt(1, attr->v + 3, attr->l - 3, from->conf->secret, from->conf->secret_len,
+                        rqout->rq->rqauth, newsalt, 2))
             goto errunlock;
         memcpy(attr->v + 1, newsalt, 2);
     }
